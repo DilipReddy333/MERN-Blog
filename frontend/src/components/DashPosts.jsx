@@ -111,7 +111,7 @@ const DashPosts = () => {
                         {new Date(post.updatedAt).toLocaleDateString("en-GB")}
                       </Table.Cell>
                       <Table.Cell>
-                        <Link to={`/post/${post.slug}`}>
+                        <Link to={`/dashboard/post/${post.slug}`}>
                           <img
                             src={post.image}
                             alt={post.title}
@@ -122,7 +122,7 @@ const DashPosts = () => {
                       <Table.Cell>
                         <Link
                           className='font-medium text-gray-900 dark:text-white'
-                          to={`post/${post.slug}`}
+                          to={`/dashboard/post/${post.slug}`}
                         >
                           {post.title}
                         </Link>

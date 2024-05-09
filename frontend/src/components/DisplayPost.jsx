@@ -3,17 +3,19 @@ import { useState, useEffect } from "react";
 import { Button, Spinner } from "flowbite-react";
 import { useSelector } from "react-redux";
 import CallToAction from "./CallToAction";
+import CommentSection from "./CommentSection";
+import PostCard from "./PostCard";
 
 const DisplayPost = () => {
   const { postSlug } = useParams();
   const [post, setPost] = useState("");
-  const { user } = useSelector((state) => state.userReducer);
   const [loading, setLoading] = useState(true);
+  const [recentPosts, setRecentPosts] = useState(null);
   useEffect(() => {
     const getPost = async () => {
       try {
         const resp = await fetch(
-          `http://localhost:3000/post/getPosts?userId=${user._id}`,
+          `http://localhost:3000/post/getPosts?slug=${postSlug}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -27,10 +29,25 @@ const DisplayPost = () => {
         console.log(error);
       }
     };
-    return () => {
-      getPost();
-    };
+    getPost();
   }, [postSlug]);
+  // console.log(post);
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        const resp = await fetch(`http://localhost:3000/post/getPosts?limit=3`);
+        const data = await resp.json();
+        if (resp.ok) {
+          setRecentPosts(data.allPosts);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    return () => {
+      fetchRecentPosts();
+    };
+  }, []);
   if (loading) {
     return (
       <div className='flex justify-center items-center min-h-screen'>
@@ -61,9 +78,7 @@ const DisplayPost = () => {
           {post && new Date(post.createdAt).toLocaleDateString("en-GB")}
         </span>
         <span className='italic'>
-          {post && (post.content.length / 1000).toFixed(0) < 0
-            ? "Quick post"
-            : "mins read"}
+          {post && (post.content.length / 1000).toFixed(0)} mins read
         </span>
       </div>
       <div
@@ -72,6 +87,16 @@ const DisplayPost = () => {
       ></div>
       <div className='max-w-4xl mx-auto w-full '>
         <CallToAction />
+      </div>
+      <CommentSection postId={post._id} />
+      <div className='flex flex-col justify-center items-center mb-5'>
+        <h1 className='tet-xl mt-5'>Recent Articles</h1>
+        <div className='flex flex-wrap gap-3 mb-5 justify-center'>
+          {recentPosts?.length > 0 &&
+            recentPosts?.map((post, i) => {
+              return <PostCard key={i} post={post} />;
+            })}
+        </div>
       </div>
     </main>
   );
