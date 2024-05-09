@@ -5,7 +5,7 @@ const password = encodeURIComponent("Dilip@321");
 const connectDB = () => {
   mongoose
     .connect(
-      `mongodb+srv://forlearningsites:aahLpV8dLQ6ow3cK@notesapp.huiv8a8.mongodb.net/mern-blog?retryWrites=true&w=majority&appName=Notesapp`
+      `MONGO_DB_URI`
     )
     .then((resp) => {
       console.log("Successfully connected to the Database!");
