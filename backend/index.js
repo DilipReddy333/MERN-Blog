@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middleware/errorMiddleware");
 const postRoute = require("./routes/postRoute");
+const commentRouter = require("./routes/commentRoute");
 
 const app = express();
 app.use(express.json());
@@ -19,5 +20,6 @@ app.listen(3000, () => {
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use("/post", postRoute);
+app.use("/comment", commentRouter);
 
 app.use(errorMiddleware);

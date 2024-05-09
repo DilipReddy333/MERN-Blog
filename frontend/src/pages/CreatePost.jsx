@@ -37,7 +37,7 @@ const CreatePost = () => {
     }
     if (data) {
       // console.log(data);
-      navigate(`/post/${data.slug}`);
+      navigate(`/dashboard/post/${data.slug}`);
     }
   };
   const uploadImageHandler = () => {
